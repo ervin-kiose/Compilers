@@ -1,6 +1,3 @@
-# Konstantinos Chatzopoulos 1796 cs091796
-# Ervin Kiose 1688 cs091688
-
 import sys
 
 token = ''
@@ -1523,3 +1520,4 @@ def legal_character(character) -> bool:
 
 
 main()
+
