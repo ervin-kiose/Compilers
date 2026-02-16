@@ -20,7 +20,7 @@ finCode = ''
 
 
 #####################################
-#          telikos kwdikas          #
+#             final code             #
 #####################################
 
 def gnvlcode(variable):
@@ -173,7 +173,7 @@ def generate_final_code(quad):
 
 
 #####################################
-#       endiamesos kwdikas          #
+#          intermediate code         #
 #####################################
 
 class quad:
@@ -245,7 +245,7 @@ def backpatch(list, z):
 
 
 #################################
-#       pinakas sumbolwn        #
+#           symbol table            #
 #################################
 
 class Scope:
@@ -347,13 +347,13 @@ def main():
     global file_name
     global intCode
     global finCode
-    # elegxnos plh8ous orismatwn
+    # check number of arguments
     if len(sys.argv) < 2:
         sys.exit("No file for compilation given.")
     elif len(sys.argv) > 2:
         sys.exit('More arguments or files than needed.')
     else:
-        # elegxos gia .cpy katalhksh
+        # check for .cpy file extension
         if sys.argv[1][-1] == 'y' and sys.argv[1][-2] == 'p' and sys.argv[1][-3] == 'c' and sys.argv[1][-4] == '.':
             try:
                 file_name = open(sys.argv[1], "r")
@@ -386,7 +386,7 @@ def def_main_part():
         def_main_function()
 
 
-# elegxoume an meta thn oloklhrwsh ths main pame se EOF
+# check if we reach EOF after main function completes
 def peek() -> bool:
     global file_name
     global current_line
@@ -404,7 +404,7 @@ def peek() -> bool:
     return False
 
 
-# elegxoume an uparxei dhlwsh/eis sunarthshs
+# check if a function declaration exists
 def peek_fu() -> bool:
     global file_name
     global current_line
@@ -539,8 +539,8 @@ def def_function():
                                 if token == '#}':
                                     for i in range(start, end):
                                         generate_final_code(quad_list[i])
-                                    # to vgazoume se sxolia gia na fainontai ta scopes twn sunarthsewn prin diagrafoun
-                                    # sto teliko stadio 8a einai ektos sxoliwn gia th swsth leitourgia tou compiler
+                                    # commented out to show function scopes before deletion
+                                    # in the final stage this should be uncommented for correct compiler operation
                                     # del myScope[-1]
                                     depth -= 1
                                     return
@@ -1267,19 +1267,19 @@ def lex():
     position = file_name.tell()
     char = file_name.read(1)
 
-    # elegxos gia adeio arxeio
+    # check for empty file
     if char == '':
         print('Syntax and lex completed without errors.')
         return
 
-    # elegxos gia leukous xarakthres
+    # check for whitespace characters
     while char == ' ' or char == '\n' or char == '\t':
         if char == '\n':
             current_line += 1
         position = file_name.tell()
         char = file_name.read(1)
 
-    # elegxos gia pshfio
+    # check for digit
     while char.isdigit():
         token += char
         position = file_name.tell()
@@ -1297,7 +1297,7 @@ def lex():
             family = 'number'
             return
 
-    # elegxos gia grammata kai alfarithmitika
+    # check for letters and alphanumeric characters
     if char.isalpha():
         token = char
         position = file_name.tell()
@@ -1315,7 +1315,7 @@ def lex():
             family = 'keyword'
         return
 
-    # elegxos gia "aplous" operators
+    # check for simple operators
     if char == '+' or char == '-' or char == '*':
         token = char
         if token == '*':
@@ -1324,7 +1324,7 @@ def lex():
             family = 'addOperator'
         return
 
-    # elegxos gia operator diaireshs
+    # check for division operator
     if char == '/':
         token += char
         char = file_name.read(1)
@@ -1334,7 +1334,7 @@ def lex():
         family = 'mulOperator'
         return
 
-    # elegxos gia relational operators kai assignment
+    # check for relational operators and assignment
     if char == '<':
         token += char
         position = file_name.tell()
@@ -1380,7 +1380,7 @@ def lex():
         family = 'assignment'
         return
 
-    # elegxos gia delimiters
+    # check for delimiters
     if char == ';' or char == ',' or char == ':':
         token = char
         if token == ';':
@@ -1391,7 +1391,7 @@ def lex():
             family = 'colon'
         return
 
-    # elegxos gia groupSymbols kai sxolia
+    # check for group symbols and comments
     if char == '[' or char == ']' or char == '(' or char == ')':
         token = char
         return
@@ -1421,7 +1421,7 @@ def lex():
     if not legal_character(char):
         sys.exit('Illegal character ' + char + ' in line: ' + str(current_line))
 
-    # elegxos gia __name__
+    # check for __name__
     if char == '_':
         token += char
         char = file_name.read(1)
@@ -1461,7 +1461,7 @@ def lex():
         else:
             sys.exit('Illegal word starting with _ in line ' + str(current_line))
 
-    # elegxos gia "__main__"
+    # check for "__main__"
     if char == '"':
         token += char
         char = file_name.read(1)
